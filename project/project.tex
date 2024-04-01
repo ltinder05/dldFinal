@@ -24,13 +24,13 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\thepage/\pageref{LastPage}}
-\lhead{OSU ECEN 3233 - Logic Design - Spring 2023}
+\lhead{OSU ECEN 2233 - Fundamentals of Digital Logic Design - Spring 2024}
 \rfoot{\LaTeX}
 
 
 % ----- Identifying Information -----------------------------------------------
 \newcommand{\myassignment}{Project: Fun with Cellular Automata and HDMI}
-\newcommand{\myduedate}{Assigned: Monday 4/3; Due \textbf{Friday 5/5} (midnight)}
+\newcommand{\myduedate}{Assigned: Monday 4/1; Due \textbf{Friday 5/3} (midnight)}
 \newcommand{\myinstructor}{Instructor: Nate Lannan}
 % -----------------------------------------------------------------------------
 
@@ -143,13 +143,16 @@ statement) as shown in Figure~\ref{starting-seed}:
 
 The key to digital systems is that digital logic can process data in parallel. To help you with your
 project, I have coded up the project datapath in Verilog to show how this works. The baseline
-project involves two simple modifications to complete the project: adding the control logic and
-adding logic to display to a screen.
+project involves three simple modifications to complete the project: adding the control logic,
+adding logic to display to a screen, and adding a LFSR pseudo random sequencer to generate your initial seed.
 In order to complete this project, the following items must be
 functional on the board:
 \begin{itemize}
 \item Control logic should be added to control each iteration of the
   zero-player game.
+\item A LFSR sequencer to initialize the game.  You should be able to view the sequencer change every clock
+ cycle using a button or switch before the seed is loaded and the game is started.  A seperate button or switch 
+should be used to load the current ``random seed" when you are ready to start the game.
 \item A video system in order to handle output to a screen through HDMI.
 \item All testbenches for the system, control, and datapath.
 \item Cleaned up code removing any unnecessary logic and/or states.
@@ -165,6 +168,7 @@ bad quiz. The following are potential modifications you can easily add
 for extra credit:
 \begin{itemize}
 \item Increase matrix (originally just 8x8)
+\item A more complicated LFSR which avoids Lock-up
 \item Add some cool patterns (e.g., gliders, spaceship – check Internet for good starting seeds)
 \item Mutations/Variations on Life (add extra rules $\rightarrow$ sometimes called better CA)
 \item Make code easier to adapt size (matrix grid)
@@ -178,8 +182,10 @@ for extra credit:
 \section{Implementation}
 
 The basic idea for the inputs and output includes your move which you
-should add through the switches.  You will technically only need a
-``Start'' switch to get things going.  The output of the datapath
+should add through the switches.  Before you implement the LFSR you will technically only need a
+``Start'' switch to get things going.  After you implement the LFSR you will 
+need a switch to observe the LSFR sequencer, and a switch to load the seed and start the game.  
+The output of the datapath
 should go to the HDMI section.  The controller for the HDMI will be
 given to you, but you will be required to figure out how to display on
 it the screen (with help of course).
@@ -226,6 +232,68 @@ make sure your datapath/control completes a matrix computation before
 it goes to the next display pattern.  This means you may need a slower
 clock to handle this, similar to Lab 3.  
 
+\subsection{LFSR}
+A Linear Feedback Shift Register (LFSR) is a shift register where the input 
+is a linear function of the current state of the register.  These shift resgisters
+are often used for fast generation of psuedo random sequences.  They are 
+unsophisticated, but have very low overhead and in our case are quite useful 
+to generate a new ``random" seed each time we play the game.  There are many
+options for how togenerate the new input into the shift register, we are most interested in 
+Maximal LFSRs.  These are LFSRs that cycle through all possible values (except one) before
+repeating.  For instance a 4 bit LFSR will cycle through 15 values before repeating.
+
+We want to have a 64 bit (8 x 8 game of life grid) LSFR cycle through a random sequence
+at each clock pulse.  When your final project is complete you will have a button or switch to display
+the cycling of the LFSR before the game runs, and a button or switch to load the random seed 
+and start the game.
+
+We will be using a simplified version of an LFSR based on this document: 
+\url{https://courses.cs.washington.edu/courses/cse369/16wi/labs/xapp052_LFSRs.pdf}
+There is a lot of implementation in this documentation to avoid a ``lock-state" but we will be implementing the 
+XNOR or XOR simplified version as shown in Figure \ref{simplified}.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{simplified.png}
+  \caption{Simplified XNOR implementation}
+  \label{simplified}
+\end{figure}
+
+In this documentation the writers opt for an XNOR implementation to avoid troubles when the LFSR is
+initialized with all 0s.  We do not care bout this issue because an all zero seed is not useful for us.  Thus,
+we are able to use a simple XOR implementation.  Once your LFSR is implemented, you should answer the 
+question: ``What happens when we initialize the LFSR with all zeros?".
+
+Fortunately the Xilinx documentation gives us a table of ``taps" for various LFSR bit lengths (Figure \ref{taps}), to produce a 
+maximal LSFR for that bit length.  These ``taps" are the bit numbers that need to be XORed to produce the
+input into the shift operation. 
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{taps.png}
+  \caption{Tap locations for a maximal implementation for n bit lengths}
+  \label{taps}
+\end{figure}
+
+For example a 16 bit LFSR using the taps specified in the Xilinx document would look like the shift register in Figure \ref{register}.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{lfsrSchem.png}
+  \caption{A 16 bit maximal LFSR.}
+  \label{register}
+\end{figure}
+
+You will need to:
+\begin{enumerate}
+\item Generate an LFSR for a small bit value (8 or 16 bits)
+\item Prove that LFSR is maximal through the use of a test bench 
+and the included python program first\_repeat.py if desired
+\item design a 64 bit LFSR to cycle through a random sequence at 
+each clock pulse to initialize the game.
+\item implement a switch to view this cycling process before the seed is loaded
+and the game begins. 
+\end{enumerate}
 
 \section{Tasks}
 

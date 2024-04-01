@@ -42,3 +42,5 @@ Generation 3:
 Note:  There is a C version here for those that like C, but it may be
 somewhat non-intuitive.  However, feel free to use the version you
 feel comfortable with.
+
+Also included is a simple python program, first_repeat.py, to check for repeats in the output file from your LFSR testbench.  This can be used to prove your implementation is a maximal LFSR.
