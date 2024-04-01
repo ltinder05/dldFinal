@@ -1,4 +1,4 @@
-This is the location for DLD Spring 2023 Project
+This is the location for DLD Spring 2024 Project
 
 Here's a useful website for debugging.
 https://playgameoflife.com/
