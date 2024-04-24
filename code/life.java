@@ -2,10 +2,10 @@ public class life {
 
     public static void main(String[] args){
 	String[] dish= {
-	    "1011",
-	    "0011",
-	    "1111",
-	    "0000"};
+	    "10111011",
+	    "00111011",
+	    "11111011",
+	    "00101100"};
 	int gens = 4;
 	for(int i= 0;i < gens;i++){
 	    System.out.println("Generation " + i + ":");

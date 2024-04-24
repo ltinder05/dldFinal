@@ -1,13 +1,13 @@
 // testbench to prove maximal LFSR
-module tb ();
+module tb64 ();
 
    //logic variables to route input and output to DUT
-   logic [7:0]  seed;
+   logic [63:0]  seed;
    logic reset;
    logic 	 clk;
-   logic [7:0] shift_seed;
-   logic [31:0]  cycles;
-   logic [7:0] origin;
+   logic [63:0] shift_seed;
+   logic [255:0]  cycles;
+   logic [63:0] origin;
 
 
    //create file handles to write results to a file
@@ -15,7 +15,7 @@ module tb ();
    integer 	 desc3;
 
    // instantiate device under test (small LFSR)
-   lfsr dut (seed, clk, reset, shift_seed);
+   lfsr64 dut (seed, clk, reset, shift_seed);
 
    //set up a clock signal
    always     
@@ -26,7 +26,6 @@ module tb ();
     initial
       begin
       //set up output file
-	       handle3 = $fopen("lfsr.out");	
 	       desc3 = handle3;
     end
 	  //set up any book keeping variables you may want to use
@@ -35,8 +34,7 @@ module tb ();
     initial
      begin
 	    #0   reset = 1'b1;	
-	    #0   seed = 8'h7A;
-      #0   origin = 8'h7A;
+	    #0   seed = 64'h7A4E2A864EFACDC6;
 
 	    #20  reset = 1'b0;	
       
@@ -64,7 +62,7 @@ module tb ();
               if (shift_seed == seed) begin 
                 $fdisplay(desc3, "%h || %h || %b", 
 		            seed, shift_seed, (seed==shift_seed));
-                $fdisplay(desc3, "\nFound the repeat at cycle = %d\n", cycles);
+                $fdisplay(desc3, "\nFound the repeat at cycle = %h\n", cycles);
                 $finish;
               end
             end

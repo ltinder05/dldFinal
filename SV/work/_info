@@ -1,0 +1,70 @@
+m255
+K4
+z2
+!s99 nomlopt
+!s11f vlog 2021.3 2021.07, Jul 13 2021
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/ltind/Downloads/dldFinal/dldFinal/SV
+T_opt
+Z1 !s110 1713997097
+Vz1fPefnzMYLaff?80l1UE3
+04 4 4 work tb64 fast 0
+=1-d8bbc1b62dbd-66298529-14b-1370
+!s124 OEM100
+o-quiet -auto_acc_if_foreign -work work +acc
+Z2 tCvgOpt 0
+n@_opt
+OL;O;2021.3;73
+vlfsr64
+Z3 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+R1
+!i10b 1
+!s100 _;VBg6@]fRLdD:Nz811Ko0
+I0Iz6bU]6n<RUPl3Gn>C@D0
+S1
+R0
+w1713996754
+8lfsr64.sv
+Flfsr64.sv
+!i122 0
+L0 1 25
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+Z5 OL;L;2021.3;73
+r1
+!s85 0
+31
+Z6 !s108 1713997097.000000
+Z7 !s107 lfsr_tb64.sv|lfsr64.sv|
+Z8 !s90 lfsr64.sv|lfsr_tb64.sv|
+!i113 0
+Z9 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R2
+vtb64
+R3
+R1
+!i10b 1
+!s100 K3>iBU2@FATO7AN`YhHOS1
+I8;3X0BOZlb>h>_;0[ZFi_1
+S1
+R0
+w1713996820
+8lfsr_tb64.sv
+Flfsr_tb64.sv
+!i122 0
+L0 2 80
+R4
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+R2
