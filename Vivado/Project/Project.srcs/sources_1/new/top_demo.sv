@@ -24,7 +24,10 @@ module top_demo
 (
   // input
   input  logic [7:0] sw,
+  input  logic [1:0] sw0,
+  input  logic [1:0] sw1,
   input  logic [3:0] btn,
+  input  logic [1:0] btn0,
   input  logic       sysclk_125mhz,
   input  logic       rst,
   
@@ -55,11 +58,22 @@ module top_demo
   logic        smol_clk;
    
   // Place Conway Game of Life instantiation here
- 
+  logic [63:0] seed;
+  assign seed = 64'h7a4e2a864efacdc6;
+  logic lfsr;
+  logic start;
+  logic reset;
+  assign reset = btn[3];
+  assign lfsr = sw[0];
+  assign start = sw[1];
+  logic [63:0] grid_out;
+  logic clk_en;
+  clk_div clk_div1 (sysclk_125mhz, sw[3], clk_en);
+  GOL GOL1 (seed, clk_en, reset, start, lfsr, grid_out);
   // HDMI
   // logic hdmi_out_en;
   //assign hdmi_out_en = 1'b0;
-  hdmi_top test (n2, sysclk_125mhz, hdmi_d_p, hdmi_d_n, hdmi_clk_p, 
+  hdmi_top test (grid_out, sysclk_125mhz, hdmi_d_p, hdmi_d_n, hdmi_clk_p, 
 		         hdmi_clk_n, hdmi_cec, hdmi_sda, hdmi_scl, hdmi_hpd);
   
   // 7-segment display
